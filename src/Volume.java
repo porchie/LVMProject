@@ -16,9 +16,6 @@ public class Volume {
         this.name = name;
     }
 
-    public void setStorage(int storage) {
-        this.storage = storage;
-    }
 
     public int getStorage() {
         return storage;
