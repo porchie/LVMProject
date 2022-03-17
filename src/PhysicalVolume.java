@@ -20,4 +20,9 @@ public class PhysicalVolume extends Volume{
     {
         this.vg = vg;
     }
+    public String getVgName()
+    {
+        if(vg==null) return null;
+        return vg.getName();
+    }
 }
