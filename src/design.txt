@@ -1,8 +1,68 @@
 
 Volume
-    PhysicalVolume
-    LogicalVolume
-    VolumeGroup
+
+    int storage - the storage in gB of the volume
+    String uuid - uuid of the volume
+    String name - name of the volume
+
+    int getStorage() - accessor for storage
+    String getName() - accessor for name
+    String getUuid() - accessor for Uuid
+
+    static int sumVolumeStorage(ArrayList<? extends Volume> v) - returns a sum of the storage of all volumes in v;
+
+PhysicalVolume extends Volume
+
+    Drive hardDrive - the hard drive associated with this physical volume
+    VolumeGroup vg - the volume group associated with this physical volume
+
+    boolean isAssigned() - returns true if the physical volume is associated with a volume group, else returns false
+    void assign(VolumeGroup vg) - assigns the physical volume a volume group with parameter vg
+    String getVgName() - returns the name of the volume group associated with this physical volume, returns null if there is no volume group
+
+
+LogicalVolume extends Volume
+
+    VolumeGroup vg - the volume group that the logical volume is associated with
+
+
+VolumeGroup
+
+     int storage - total storage of the physical volumes associated with this volume group
+     String uuid - uuid of the volume group
+     String name - name of the volume group
+     ArrayList<PhysicalVolume> pvList - list of physical volumes associated with the volume group
+     ArrayList<LogicalVolume> lvList - list of logical volumes associated with the volume group
+     int storageUsed - total storage used by the logical volumes associated with the volume group
+
+     int getStorage() - accessor for storage
+     String getName() - accessor for name
+     String getUuid() - accessor for Uuid
+     ArrayList<PhysicalVolume> getPvList - accessor for pvList
+     ArrayList<LogicalVolume> getLvList - accessor for lvList
+     int getStorageUsed - accessor for storageUsed
+
+     boolean addNewLv(LogicalVolume lv) - adds a logical volume to the volume group, returns true if successful, returns false if there isn't enough storage left
+     void addNewPv(PhysicalVolume pv) - extends the volume group with a new physical volume
 
 
 Drive
+
+    String name - name of the drive
+    int storage - amount of storage the drive contains
+    boolean pvAssociated - if the drive is assigned a physical volume
+
+    String getName() - accessor for name
+    int getStorage() - accessor for storage
+    boolean isPvAssociated - accessor for pvAssociated
+    void assignPv() - sets pvAssociated to true
+
+
+Manager
+
+      Map<String, PhysicalVolume> pvList - A map of physical volumes created
+      Map<String, LogicalVolume> lvList - A map of logical volumes created
+      Map<String, VolumeGroup> vgList - A map of volume groups created
+      Map<String, Drive> drvList - A map of drives added
+
+      String process(String cmd,String params) - parses the input from the client class to run a program and return a status message

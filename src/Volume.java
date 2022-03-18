@@ -33,9 +33,4 @@ public class Volume {
     {
         return v.stream().mapToInt(l -> l.getStorage()).sum();
     }
-
-    public String toString()
-    {
-        return name;
-    }
 }
