@@ -14,6 +14,76 @@ public class Manager {
         drvList = new HashMap<>();
     }
 
+    public String process(String cmd, String params)
+    {
+        try {
+            String[] cmdArr = params.split(" ");
+            if (cmd.equals("install-drive")) {
+                String name = cmdArr[0];
+                int size = Integer.parseInt(cmdArr[1].substring(0,cmdArr[1].length()-1));
+                if (installDrv(name, size))
+                {
+                    return "drive "  + name + " installed";
+                }
+            }
+            else if (cmd.equals("pvcreate")) {
+                String name = cmdArr[0];
+                String dr = cmdArr[1];
+                if(pvCreate(name,dr))
+                {
+                    return name + " created";
+                }
+            }
+            else if (cmd.equals("lvcreate")) {
+                String name = cmdArr[0];
+                int size = Integer.parseInt(cmdArr[1].substring(0,cmdArr[1].length()-1));
+                String vgName = cmdArr[2];
+                if(lvCreate(name,size,vgName))
+                {
+                    return name + " created";
+                }
+            }
+            else if (cmd.equals("vgcreate")) {
+                String name = cmdArr[0];
+                String pvName = cmdArr[1];
+                if(vgCreate(name,pvName))
+                {
+                    return name + " created";
+                }
+            }
+            else if(cmd.equals("vgextend"))
+            {
+                String name = cmdArr[0];
+                String pvName = cmdArr[1];
+                if(vgExtend(name,pvName))
+                {
+                    return pvName + " added to " + name;
+                }
+            }
+            else if (cmd.equals("list-drives")) {
+                return drvList();
+            }
+            else if (cmd.equals("pvlist")) {
+                return pvList();
+            }
+            else if (cmd.equals("vglist")) {
+                return vgList();
+            }
+            else if (cmd.equals("lvlist")) {
+                return lvList();
+            }
+            else {
+                return "non-valid input";
+            }
+            return "Ran into an Error";
+        }
+        catch (IndexOutOfBoundsException e)
+        {
+            return "invalid input";
+        }
+    }
+
+
     /*
     cmds
 
@@ -42,6 +112,7 @@ public class Manager {
     }
     private boolean pvCreate(String name, String drive)
     {
+        if (pvList.containsKey(name)) return false;
         Drive dr = drvList.get(drive);
         if(dr==null) return false;
         if(dr.isPvAssociated()) return false;
@@ -81,6 +152,7 @@ public class Manager {
 
     private boolean lvCreate(String name, int size,String vgName)
     {
+        if (lvList.containsKey(name)) return false;
         VolumeGroup vg = vgList.get(vgName);
         if(vg==null) return false;
 
@@ -110,18 +182,18 @@ public class Manager {
     private String pvList()
     {
         String str = "";
-
+        String notInVg = "not in a vg";
         //sorting
         Map<String, ArrayList<PhysicalVolume>> vgSortedPv =  new HashMap<>();
         for(Map.Entry<String,PhysicalVolume> entry:pvList.entrySet()){
            PhysicalVolume pv = entry.getValue();
            String vgName = pv.getVgName();
+           if(vgName == null)  vgName = notInVg;
            ArrayList<PhysicalVolume> arr = vgSortedPv.get(vgName);
-           if(arr==null) vgSortedPv.put(vgName,new ArrayList<PhysicalVolume>(Arrays.asList(pv)));
-           else
-           {
-               arr.add(pv);
-           }
+           if (arr == null) vgSortedPv.put(vgName, new ArrayList<PhysicalVolume>(Arrays.asList(pv)));
+           else arr.add(pv);
+
+
         }
 
 

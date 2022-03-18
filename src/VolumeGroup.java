@@ -18,6 +18,7 @@ public class VolumeGroup {
         this.uuid = u.toString();
         storageUsed = 0;
         this.pvList = new ArrayList<PhysicalVolume>();
+        this.lvList = new ArrayList<LogicalVolume>();
         addNewPv(pv);
     }
 
