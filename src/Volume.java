@@ -16,6 +16,15 @@ public class Volume {
         this.name = name;
     }
 
+    public Volume(int storage, String name, String uuid)
+    {
+        this.storage = storage;
+
+        this.uuid = uuid;
+
+        this.name = name;
+    }
+
 
     public int getStorage() {
         return storage;
