@@ -43,7 +43,7 @@ public class Manager {
         try {
             File file = new File(fileName);
             FileWriter writer = new FileWriter(fileName);
-
+            // Do drive first, then pv, then vgs, then lv, do uuid
             for(String s: cmdList)
             {
                 writer.write(s + System.lineSeparator());
@@ -51,7 +51,7 @@ public class Manager {
             writer.close();
         }
         catch (Exception e){
-
+            // if this runs then i die lol
         }
     }
     private void addCmd(String cmd, String params)
