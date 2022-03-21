@@ -1,24 +1,70 @@
 import java.util.*;
+import java.io.*;
+
 
 public class Manager {
     private Map<String, PhysicalVolume> pvList;
     private Map<String, LogicalVolume> lvList;
     private Map<String, VolumeGroup> vgList;
     private Map<String, Drive> drvList;
+    private ArrayList<String> cmdList;
 
 
-    public Manager() {
+    public Manager(String fileName) {
         pvList = new HashMap<>();
         lvList = new HashMap<>();
         vgList = new HashMap<>();
         drvList = new HashMap<>();
+        cmdList = new ArrayList<>();
+        loadFromSave(fileName);
+    }
+    private void loadFromSave(String fileName)
+    {
+        try {
+            File file = new File(fileName);
+            Scanner sc = new Scanner(file);
+
+            while(sc.hasNext())
+            {
+                String cmd = sc.next();
+                String ins = sc.nextLine();
+                ins = (ins.length()>0)? ins.substring(1): ins;
+                process(cmd,ins);
+            }
+            sc.close();
+        }
+        catch(FileNotFoundException e) {
+            System.out.println(e.getMessage() + " asfAfnkadgfsdgnj");
+        }
     }
 
+    public void saveToFile(String fileName)
+    {
+        try {
+            File file = new File(fileName);
+            FileWriter writer = new FileWriter(fileName);
+
+            for(String s: cmdList)
+            {
+                writer.write(s + System.lineSeparator());
+            }
+            writer.close();
+        }
+        catch (Exception e){
+
+        }
+    }
+    private void addCmd(String cmd, String params)
+    {
+        cmdList.add(cmd + " " + params);
+    }
     public String process(String cmd, String params)
     {
         try {
+
             String[] cmdArr = params.split(" ");
             if (cmd.equals("install-drive")) {
+                addCmd(cmd,params);
                 String name = cmdArr[0];
                 int size = Integer.parseInt(cmdArr[1].substring(0,cmdArr[1].length()-1));
                 if (installDrv(name, size))
@@ -27,6 +73,7 @@ public class Manager {
                 }
             }
             else if (cmd.equals("pvcreate")) {
+                addCmd(cmd,params);
                 String name = cmdArr[0];
                 String dr = cmdArr[1];
                 if(pvCreate(name,dr))
@@ -35,6 +82,7 @@ public class Manager {
                 }
             }
             else if (cmd.equals("lvcreate")) {
+                addCmd(cmd,params);
                 String name = cmdArr[0];
                 int size = Integer.parseInt(cmdArr[1].substring(0,cmdArr[1].length()-1));
                 String vgName = cmdArr[2];
@@ -44,6 +92,7 @@ public class Manager {
                 }
             }
             else if (cmd.equals("vgcreate")) {
+                addCmd(cmd,params);
                 String name = cmdArr[0];
                 String pvName = cmdArr[1];
                 if(vgCreate(name,pvName))
@@ -53,6 +102,7 @@ public class Manager {
             }
             else if(cmd.equals("vgextend"))
             {
+                addCmd(cmd,params);
                 String name = cmdArr[0];
                 String pvName = cmdArr[1];
                 if(vgExtend(name,pvName))
@@ -71,6 +121,9 @@ public class Manager {
             }
             else if (cmd.equals("lvlist")) {
                 return lvList();
+            }
+            else if(cmd.equals("exit")) {
+                return "program exited, volumes saved";
             }
             else {
                 return "non-valid input";

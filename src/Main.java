@@ -1,11 +1,14 @@
 import java.util.*;
+import java.io.*;
 
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
+
         Scanner sc = new Scanner(System.in);
         String cmd = "";
-        Manager manager = new Manager();
+        String fileName = "src\\save.txt";
+        Manager manager = new Manager(fileName);
         while(!cmd.equals("exit"))
         {
             System.out.print("cmd# ");
@@ -14,9 +17,8 @@ public class Main {
             ins = (ins.length()>0)? ins.substring(1): ins;
             System.out.println(manager.process(cmd,ins));
         }
-
-
-
+        manager.saveToFile(fileName);
+         sc.close();
 
     }
 }
