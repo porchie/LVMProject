@@ -3,11 +3,11 @@ import java.io.*;
 
 
 public class Main {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
 
         Scanner sc = new Scanner(System.in);
         String cmd = "";
-        String fileName = "src\\save.txt";
+        String fileName = "src\\conf";
         Manager manager = new Manager(fileName);
         while(!cmd.equals("exit"))
         {
@@ -18,7 +18,7 @@ public class Main {
             System.out.println(manager.process(cmd,ins));
         }
         manager.saveToFile(fileName);
-         sc.close();
+        sc.close();
 
     }
 }

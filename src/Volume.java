@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.*;
 
 
-public class Volume {
+public class Volume implements Serializable {
     private int storage;
     private String uuid;
     private String name;

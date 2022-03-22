@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.*;
 
 
-public class Drive {
+public class Drive implements Serializable {
     private String name;
     private int storage;
     private boolean pvAssociated;
