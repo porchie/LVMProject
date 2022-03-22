@@ -33,7 +33,8 @@ public class Manager {
             objectInputStream.close();
         }
         catch(Exception e) {
-            //dont run plz
+            // dont run plz
+            // This exception runs if the file ends, which it should
         }
     }
 
@@ -45,7 +46,8 @@ public class Manager {
             objectOutputStream.writeObject(drvList);
             objectOutputStream.writeObject(pvList);
             objectOutputStream.writeObject(vgList);
-            objectOutputStream.writeObject(lvList);
+            objectOutputStream.writeObject(lvList); 
+            // even if this is empty, should save an empty hashmap
             objectOutputStream.flush();
             objectOutputStream.close();
         }
