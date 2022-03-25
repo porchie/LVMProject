@@ -33,7 +33,7 @@ public class Manager {
             objectInputStream.close();
         }
         catch(Exception e) {
-            // dont run plz
+           
             // This exception runs if the file ends, which it should
         }
     }
@@ -52,7 +52,7 @@ public class Manager {
             objectOutputStream.close();
         }
         catch (Exception e){
-            //dont run plz
+          
         }
     }
 
