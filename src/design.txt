@@ -66,3 +66,4 @@ Manager
       Map<String, Drive> drvList - A map of drives added
 
       String process(String cmd,String params) - parses the input from the client class to run a program and return a status message
+      void saveToFile(String fileName) - saves the object data within the Manager class to the file, serialized data
